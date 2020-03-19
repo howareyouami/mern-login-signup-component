@@ -80,13 +80,14 @@ exports.loginUser = async (req, res) => {
       }
       currentUser
         .save()
-        .then(
-          res.json("Successfully Sent mail")
-        )
         .catch((err) => {
           throw new Error(err.message)
         });
 
+        const sessUser = { id: currentUser.id, name: "new user", email: currentUser.email };
+        req.session.user = sessUser; // Auto saves session data in mongo store
+
+        res.json(sessUser); // sends cookie with sessionID automatically in response
 
     } else {
       console.log(result.error)
