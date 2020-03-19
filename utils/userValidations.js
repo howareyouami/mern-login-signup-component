@@ -28,6 +28,6 @@ const name = Joi.string().min(8).max(30).pattern(/^[a-zA-Z' ]{3,20}$/).required(
 
 });
 
-exports.loginSchema = Joi.object({ email, password});
+exports.loginSchema = Joi.object({ email });
 
 exports.registerSchema = Joi.object({ name, email, password});
