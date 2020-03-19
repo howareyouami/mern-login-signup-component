@@ -1,5 +1,5 @@
 import {
-
+  CHANGE_APP_STATUS,
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
@@ -13,12 +13,18 @@ import {
 
 const initialState = {
   isAuthenticated: null,
-  user: null,
+  appStatus: "",
+  user: null
 };
 
 export default function (state = initialState, action) {
 
   switch (action.type) {
+    case CHANGE_APP_STATUS: 
+    return {
+      ...state,
+      appStatus: action.payload
+    };
     case REGISTER_SUCCESS:
       return {
         ...state,
@@ -45,7 +51,7 @@ export default function (state = initialState, action) {
       }
 
     default:
-        return state;
+      return state;
   }
 
 }

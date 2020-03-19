@@ -10,8 +10,10 @@ import {
   AUTH_FAIL,
   LOGOUT_SUCCESS,
   IS_LOADING,
+  CHANGE_APP_STATUS
 } from "./types";
 
+import { appStatusType } from '../constants'
 
 axios.defaults.baseURL = "http://localhost:5000";
 
@@ -84,6 +86,7 @@ export const login = ({ email, password }) => (dispatch) => {
         type: LOGIN_SUCCESS,
         payload: res.data
       });
+      dispatch({ type: CHANGE_APP_STATUS, payload: appStatusType.OTP_SENT })
       dispatch({ type: IS_LOADING });
     }
     )

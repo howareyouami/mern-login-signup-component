@@ -11,11 +11,11 @@ import { buttonClicked } from "../actions/uiActions";
 import './style.css';
 import store from '../store';
 import { isAuth } from '../actions/authActions'
-import {Redirect} from 'react-router-dom'
-
+import { Redirect } from 'react-router-dom'
+import { appStatusType } from '../constants'
 
 var divStyle = {
-color:'white'
+  color: 'white'
 };
 
 export class HomePage extends Component {
@@ -32,12 +32,12 @@ export class HomePage extends Component {
 
   render() {
 
-    if(this.props.isAuthenticated) {
+    if (this.props.appStatus === appStatusType.REGISTERED) {
       return <Redirect to="/profile" />
     }
 
     return (
-       <div className="container">
+      <div className="container">
         <div className="main">
           {/* <h1 style={divStyle}> <strong>MERN</strong> Sessions Auth App </h1>
           <br/>
@@ -47,28 +47,28 @@ export class HomePage extends Component {
           <div>
 
             <Switch>
-              <Route exact path ="/login" component={Login}/>
-              <Route exact path ="/register" component={Register}/>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
             </Switch>
 
-             { this.props.button && <Link className='divStyle' to="/login">
-               <Button size="lg"  color="light">Start</Button>
-               </Link>}
-{/* 
+            {this.props.button && <Link className='divStyle' to="/login">
+              <Button size="lg" color="light">Start</Button>
+            </Link>}
+            {/* 
              {this.props.button && <Link className='divStyle' to="/register">
                <Button  size="lg"  color="light">Register</Button>
              </Link>} */}
 
           </div>
         </div>
-    </div>
+      </div>
     )
   }
 }
 const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
-  isAuthenticated: state.auth.isAuthenticated
-
+  isAuthenticated: state.auth.isAuthenticated,
+  appStatus: state.auth.appStatus
 });
 
 export default connect(mapStateToProps)(HomePage);
