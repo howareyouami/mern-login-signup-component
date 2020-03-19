@@ -21,9 +21,9 @@ import "./style.css";
 
 class Register extends Component {
   state = {
-    name: "",
-    email: "",
-    password: "",
+    firstName: "",
+    lastName: "",
+    refCode: "",
     msg: ""
   };
 
@@ -53,12 +53,12 @@ class Register extends Component {
       }
     }
 
-    // Redirects to Log In screen after a delay of 2secs if successfully registered
-    if (status.id === "REGISTER_SUCCESS") {
-      setTimeout(() => {
-        this.props.history.push("/login");
-      }, 2000);
-    }
+    // // Redirects to Log In screen after a delay of 2secs if successfully registered
+    // if (status.id === "REGISTER_SUCCESS") {
+    //   setTimeout(() => {
+    //     this.props.history.push("/login");
+    //   }, 2000);
+    // }
   }
 
   // Sets the value of the input fields to the state items of the same name
@@ -70,9 +70,9 @@ class Register extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { firstName, lastName, refCode } = this.state;
 
-    const user = { name, email, password };
+    const user = { firstName, lastName, refCode, userId: this.props.userId };
     this.props.isLoading();
     this.props.register(user);
   };
@@ -113,41 +113,41 @@ class Register extends Component {
             {alert}
             <Form onSubmit={this.onSubmit}>
               <FormGroup className="text-center">
-                <Label for="name">Name</Label>
+                <Label for="firstName">First Name</Label>
                 <Input
                   type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Enter your name"
+                  name="firstName"
+                  id="firstName"
+                  placeholder="Enter your first name"
                   className="mb-3"
                   size="lg"
                   onChange={this.onChange}
                 />
 
-                <Label for="email">E-mail</Label>
+                <Label for="lastName">Last Name</Label>
                 <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="you@youremail.com"
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  placeholder="Enter your last name"
                   className="mb-3"
                   size="lg"
                   onChange={this.onChange}
                 />
 
-                <Label for="password">Password</Label>
+                <Label for="refCode">Referal Code</Label>
                 <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Enter your Password"
+                  type="text"
+                  name="refCode"
+                  id="nrefCodeame"
+                  placeholder="Enter your referal code"
                   className="mb-3"
                   size="lg"
                   onChange={this.onChange}
                 />
                 <Button color="dark" className="mt-5" size="lg" block>
-                { this.props.loading ?
-                       <span >Registering.. <Spinner size="sm" color="light" /></span> : <span>Register</span>}
+                  {this.props.loading ?
+                    <span >Registering.. <Spinner size="sm" color="light" /></span> : <span>Register</span>}
                 </Button>
               </FormGroup>
             </Form>
@@ -162,7 +162,8 @@ const mapStateToProps = (state) => ({
   //Maps state to redux store as props
   button: state.ui.button,
   status: state.status,
-  loading: state.ui.loading
+  loading: state.ui.loading,
+  userId: state.auth.user.id
 });
 
 export default connect(

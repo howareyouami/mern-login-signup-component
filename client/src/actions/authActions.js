@@ -41,31 +41,35 @@ export const isAuth = () => (dispatch) => {
 }
 
 //Register New User
-export const register = ({ name, email, password }) => (dispatch) => {
-  // Headers
-  const headers = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+export const register = ({
+  firstName,
+  lastName,
+  refCode,
+  userId }) => (dispatch) => {
+    // Headers
+    const headers = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
 
-  // Request body
-  const body = JSON.stringify({ name, email, password });
-
-  axios
-    .post("/api/users/register", body, headers)
-    .then((res) => {
-      dispatch(returnStatus(res.data, res.status, REGISTER_SUCCESS));
-      dispatch({ type: IS_LOADING })
-    })
-    .catch((err) => {
-      dispatch(returnStatus(err.response.data, err.response.status, 'REGISTER_FAIL'))
-      dispatch({
-        type: REGISTER_FAIL
+    // Request body
+    const body = JSON.stringify({ firstName, lastName, refCode, userId });
+    axios
+      .post("/api/users/register", body, headers)
+      .then((res) => {
+        dispatch(returnStatus(res.data, res.status, REGISTER_SUCCESS));
+        dispatch({ type: CHANGE_APP_STATUS, payload: res.data })
+        dispatch({ type: IS_LOADING })
+      })
+      .catch((err) => {
+        dispatch(returnStatus(err.response.data, err.response.status, 'REGISTER_FAIL'))
+        dispatch({
+          type: REGISTER_FAIL
+        });
+        dispatch({ type: IS_LOADING })
       });
-      dispatch({ type: IS_LOADING })
-    });
-};
+  };
 
 //Login User
 export const login = ({ email, password }) => (dispatch) => {
@@ -105,7 +109,7 @@ export const otpVerify = ({ otp, userId }) => (dispatch) => {
   axios
     .post("/api/users/otpVerify", { otp, userId })
     .then((res) => {
-      console.log("res",res)
+      console.log("res", res)
       dispatch({ type: CHANGE_APP_STATUS, payload: res.data })
       dispatch({ type: IS_LOADING });
     }

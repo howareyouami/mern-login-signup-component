@@ -16,41 +16,23 @@ exports.isAuth = (req, res, next) => {
 };
 
 exports.registerUser = (req, res) => {
-  const { name, email, password } = req.body;
-
-  const result = registerSchema.validate({ name, email, password });
-  if (!result.error) {
-
-    // Check for existing user
-    User.findOne({ email: email }).then((user) => {
-      if (user) return res.status(400).json("User already exists");
-
-      //New User created
-      const newUser = new User({
-        name,
-        email,
-        password
-      });
-
-      //Password hashing
-      bcrypt.genSalt(12, (err, salt) =>
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-
-          newUser.password = hash;
-          // Save user
-          newUser
-            .save()
-            .then(
-              res.json("Successfully Registered")
-            )
-            .catch((err) => console.log(err));
-        })
-      );
+  try {
+    const { firstName, lastName, refCode, userId } = req.body;
+    User.findOne({ _id: userId }).then((user) => {
+      if (!user) throw new Error("User not found")
+      //User update
+      user.firstName = firstName
+      user.lastName = lastName
+      user.refCode = refCode
+      user.isRegistered = true
+      user.save()
+      res.json("REGISTERED");
     });
-  } else {
-    res.status(422).json(result.error.details[0].message);
+
+  } catch (error) {
+    res.status(422).json(error.message);
   }
+
 
 };
 
@@ -103,7 +85,7 @@ exports.otpVerify = async (req, res) => {
   try {
     const { otp, userId } = req.body;
     let currentUser = await User.findOne({ _id: userId })
-    console.log("currentUser",currentUser)
+    console.log("currentUser", currentUser)
     if (currentUser.otp === otp) {
       if (currentUser.isRegistered) {
         res.json("REGISTERED");

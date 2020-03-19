@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
+  refCode: {
     type: String,
   },
   email: {
@@ -21,6 +27,7 @@ const UserSchema = new mongoose.Schema({
   isRegistered: {
     type: Boolean,
   }
+  
 });
 
 const User = mongoose.model("User", UserSchema);
