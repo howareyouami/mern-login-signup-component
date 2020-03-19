@@ -82,9 +82,9 @@ onSubmit = (e) => {
 
             <Card>
                 <CardBody >
-                  <CardTitle> <h2><strong>Login</strong></h2></CardTitle>
-                <CardSubtitle className="text-muted">Don't have an account?
-                <Link to="/register"> Register. </Link></CardSubtitle>
+                  <CardTitle> <h2><strong>Welcome, please enter your E-mail</strong></h2></CardTitle>
+                {/* <CardSubtitle className="text-muted">Don't have an account?
+                <Link to="/register"> Register. </Link></CardSubtitle> */}
                 <br/>
                 {this.state.msg ? (
               <Alert color="danger">{this.state.msg}</Alert>
@@ -102,7 +102,7 @@ onSubmit = (e) => {
                       className="mb-3"
                       onChange={this.onChange}
                     />
-
+{/* 
                     <Label for="password">Password</Label>
                     <Input
                       type="password"
@@ -112,10 +112,10 @@ onSubmit = (e) => {
                       placeholder="Enter your Password"
                       className="mb-3"
                       onChange={this.onChange}
-                    />
+                    /> */}
                     <Button size="lg" color="dark" style={{ marginTop: "2rem" }} block>
                        { this.props.loading ?
-                       <span >Logging in.. <Spinner size="sm" color="light" /></span> : <span>Login</span>}
+                       <span >Checking... <Spinner size="sm" color="light" /></span> : <span>Lets go</span>}
                     </Button>
                   </FormGroup>
                 </Form>
