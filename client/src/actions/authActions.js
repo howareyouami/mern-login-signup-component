@@ -128,10 +128,16 @@ export const logout = () => (dispatch) => {
 
   axios
     .delete("/api/users/logout", { withCredentials: true })
-    .then((res) =>
+    .then((res) => {
       dispatch({
         type: LOGOUT_SUCCESS,
       })
+      dispatch({
+        type: CHANGE_APP_STATUS,
+        payload:""
+      })
+    }
+
     )
     .catch((err) => {
       console.log(err);

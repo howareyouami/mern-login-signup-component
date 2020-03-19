@@ -31,9 +31,9 @@ export class Profile extends Component {
 
   render() {
 
-    if(!this.props.authState.isAuthenticated) {
-      return <Redirect to="/" />
-    }
+    // if(!this.props.authState.isAuthenticated) {
+    //   return <Redirect to="/login" />
+    // }
 
     const {user} = this.props.authState;
 
