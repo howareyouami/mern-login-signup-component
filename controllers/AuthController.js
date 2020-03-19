@@ -2,7 +2,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User"); // User model
 const { sendMail } = require("../utils/sendMail");
 const { registerSchema, loginSchema } = require('../utils/userValidations');
-
+const otpGenerator = require('otp-generator')
+  
 exports.isAuth = (req, res, next) => {
   const sessUser = req.session.user;
   if (sessUser) {
@@ -69,7 +70,7 @@ exports.loginUser = (req, res) => {
           });
         }
         currentUser = user
-        const otp = "1234"
+        const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
         const otpGeneratedTime = Date.now()
 
         currentUser.otp = otp
