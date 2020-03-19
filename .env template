@@ -6,3 +6,5 @@ DB_CLUSTER=cluster0-ha9gp.gcp
 SESS_SECRET=yourSessionSecret
 NODE_ENV='development'
 COOKIE_NAME='your-session-cookie-name'
+MAILGUN_DOMAIN='domainid.mailgun.org'
+MAILGUN_KEY='hidden'

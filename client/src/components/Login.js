@@ -63,9 +63,9 @@ onChange = (e) => {
 onSubmit = (e) => {
     e.preventDefault();
 
-    const { email, password} = this.state;
+    const { email } = this.state;
 
-    const user = { email, password};
+    const user = { email };
     this.props.isLoading();
     this.props.login(user);
   };

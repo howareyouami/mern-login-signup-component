@@ -10,4 +10,6 @@ module.exports = {
   DB_CLUSTER: process.env.DB_CLUSTER,
   SESS_SECRET: process.env.SESS_SECRET,
   COOKIE_NAME: process.env.COOKIE_NAME,
+  MAILGUN_DOMAIN: process.env.MAILGUN_DOMAIN,
+  MAILGUN_KEY: process.env.MAILGUN_KEY,
 };

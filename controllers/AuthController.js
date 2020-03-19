@@ -1,8 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User"); // User model
-const Joi = require('@hapi/joi');
+const { sendMail } = require("../utils/sendMail");
 const { registerSchema, loginSchema } = require('../utils/userValidations');
-import sendEmail from '../utils/sendEmail'
 
 exports.isAuth = (req, res, next) => {
   const sessUser = req.session.user;
@@ -55,12 +54,13 @@ exports.registerUser = (req, res) => {
 };
 
 exports.loginUser = (req, res) => {
-  const { email } = req.body;
-  let currentUser
-  // basic validation
-  const result = loginSchema.validate({ email });
-  if (!result.error) {
-    try {
+  try {
+    const { email } = req.body;
+    let currentUser
+    // basic validation
+    const result = loginSchema.validate({ email });
+    if (!result.error) {
+
       User.findOne({ email: email }).then((user) => {
         if (!user) {
           //New User created
@@ -69,14 +69,13 @@ exports.loginUser = (req, res) => {
           });
         }
         currentUser = user
-  
         const otp = "1234"
         const otpGeneratedTime = Date.now()
-    
+
         currentUser.otp = otp
         currentUser.otpGeneratedTime = otpGeneratedTime
         currentUser.isRegistered = false
-    
+        sendMail(otp, email)
         currentUser
           .save()
           .then(
@@ -85,13 +84,13 @@ exports.loginUser = (req, res) => {
           .catch((err) => console.log(err));
       });
 
+    } else {
+      console.log(result.error)
+      throw new Error(result.error.details[0].message)
     }
-    catch(e){
-      res.status(422).json(e.message);
-    }
-  } else {
-    console.log(result.error)
-    res.status(422).json(result.error.details[0].message);
+  }
+  catch (e) {
+    res.status(422).json(e.message);
   }
 };
 
