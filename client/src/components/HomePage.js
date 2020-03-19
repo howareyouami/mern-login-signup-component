@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
 import { connect } from "react-redux";
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import {
   Button,
 } from "reactstrap";
@@ -31,9 +31,18 @@ export class HomePage extends Component {
   };
 
   render() {
+    const { pathname } = this.props.location;
+    console.log("pathname===>", pathname)
+    if ((!this.props.appStatus || this.props.appStatus === appStatusType.OTP_SENT) && pathname != '/login') {
+      return <Redirect to="/login" />
+    }
 
-    if (this.props.appStatus === appStatusType.REGISTERED) {
+    if (this.props.appStatus === appStatusType.REGISTERED && pathname != '/profile') {
       return <Redirect to="/profile" />
+    }
+
+    if (this.props.appStatus === appStatusType.OTP_VERIFIED && pathname != '/register') {
+      return <Redirect to="/register" />
     }
 
     return (
@@ -71,4 +80,4 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   appStatus: state.auth.appStatus
 });
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(withRouter(HomePage));

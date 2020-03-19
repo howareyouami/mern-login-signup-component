@@ -99,6 +99,26 @@ export const login = ({ email, password }) => (dispatch) => {
     });
 };
 
+
+//Login User
+export const otpVerify = ({ otp, userId }) => (dispatch) => {
+  axios
+    .post("/api/users/otpVerify", { otp, userId })
+    .then((res) => {
+      console.log("res",res)
+      dispatch({ type: CHANGE_APP_STATUS, payload: res.data })
+      dispatch({ type: IS_LOADING });
+    }
+    )
+    .catch((err) => {
+      dispatch(returnStatus(err.response.data, err.response.status, 'LOGIN_FAIL'))
+      // dispatch({
+      //   type: LOGIN_FAIL
+      // });
+      dispatch({ type: IS_LOADING })
+    });
+};
+
 //Logout User and Destroy session
 export const logout = () => (dispatch) => {
 

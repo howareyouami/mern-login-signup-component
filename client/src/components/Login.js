@@ -15,7 +15,7 @@ import {
 import { connect } from "react-redux"; // API to connect component state to redux store
 import PropTypes from "prop-types";
 import { buttonClicked, isLoading } from "../actions/uiActions";
-import { login } from "../actions/authActions";
+import { login, otpVerify } from "../actions/authActions";
 import { appStatusType } from '../constants'
 import { Link } from 'react-router-dom'
 import './style.css';
@@ -26,7 +26,6 @@ class Login extends Component {
 
   state = {
     email: "",
-    password: "",
     msg: "",
     otp: ""
   }
@@ -63,12 +62,21 @@ class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
-    const { email } = this.state;
-
-    const user = { email };
     this.props.isLoading();
-    this.props.login(user);
+
+    if (!this.props.showOtp) {
+      const { email } = this.state;
+
+      const user = { email };
+      this.props.login(user);
+    } else {
+      const payload = {
+        userId: this.props.userId,
+        otp: this.state.otp
+      }
+      this.props.otpVerify(payload)
+    }
+
   };
 
 
@@ -133,7 +141,8 @@ const mapStateToProps = (state) => ({ //Maps state element in redux store to pro
   isAuthenticated: state.auth.isAuthenticated,
   status: state.status,
   loading: state.ui.loading,
-  showOtp: state.auth.appStatus === appStatusType.OTP_SENT
+  showOtp: state.auth.appStatus === appStatusType.OTP_SENT,
+  userId: state.auth.user && state.auth.user.id
 });
 
-export default connect(mapStateToProps, { login, isLoading, buttonClicked })(Login);
+export default connect(mapStateToProps, { login, isLoading, buttonClicked, otpVerify })(Login);

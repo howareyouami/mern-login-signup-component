@@ -66,13 +66,13 @@ exports.loginUser = async (req, res) => {
         currentUser = new User({
           email,
         });
+        currentUser.isRegistered = false
       }
       const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
       const otpGeneratedTime = Date.now()
 
       currentUser.otp = otp
       currentUser.otpGeneratedTime = otpGeneratedTime
-      currentUser.isRegistered = false
       const mailResponse = await sendMail(otp, email)
       console.log("mailResponse===>", mailResponse)
       if (!mailResponse.id) {
@@ -84,10 +84,10 @@ exports.loginUser = async (req, res) => {
           throw new Error(err.message)
         });
 
-        const sessUser = { id: currentUser.id, name: "new user", email: currentUser.email };
-        req.session.user = sessUser; // Auto saves session data in mongo store
+      const sessUser = { id: currentUser.id, name: "new user", email: currentUser.email };
+      req.session.user = sessUser; // Auto saves session data in mongo store
 
-        res.json(sessUser); // sends cookie with sessionID automatically in response
+      res.json(sessUser); // sends cookie with sessionID automatically in response
 
     } else {
       console.log(result.error)
@@ -97,6 +97,27 @@ exports.loginUser = async (req, res) => {
   catch (e) {
     res.status(422).json(e.message);
   }
+};
+
+exports.otpVerify = async (req, res) => {
+  try {
+    const { otp, userId } = req.body;
+    let currentUser = await User.findOne({ _id: userId })
+    console.log("currentUser",currentUser)
+    if (currentUser.otp === otp) {
+      if (currentUser.isRegistered) {
+        res.json("REGISTERED");
+      } else {
+        res.json("OTP_VERIFIED");
+      }
+    } else {
+      throw new Error("Wrong otp")
+    }
+    console.log("otp===>", otp, "userId===>", userId, "currentUser.otp", currentUser.otp)
+  } catch (error) {
+    res.status(422).json(error.message);
+  }
+
 };
 
 exports.logoutUser = (req, res) => {
