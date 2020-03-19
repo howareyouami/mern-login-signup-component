@@ -3,7 +3,7 @@ const User = require("../models/User"); // User model
 const { sendMail } = require("../utils/sendMail");
 const { registerSchema, loginSchema } = require('../utils/userValidations');
 const otpGenerator = require('otp-generator')
-  
+
 exports.isAuth = (req, res, next) => {
   const sessUser = req.session.user;
   if (sessUser) {
@@ -54,36 +54,39 @@ exports.registerUser = (req, res) => {
 
 };
 
-exports.loginUser = (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
     const { email } = req.body;
-    let currentUser
     // basic validation
     const result = loginSchema.validate({ email });
     if (!result.error) {
+      let currentUser = await User.findOne({ email: email })
+      if (!currentUser) {
+        //New User created
+        currentUser = new User({
+          email,
+        });
+      }
+      const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
+      const otpGeneratedTime = Date.now()
 
-      User.findOne({ email: email }).then((user) => {
-        if (!user) {
-          //New User created
-          user = new User({
-            email,
-          });
-        }
-        currentUser = user
-        const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
-        const otpGeneratedTime = Date.now()
+      currentUser.otp = otp
+      currentUser.otpGeneratedTime = otpGeneratedTime
+      currentUser.isRegistered = false
+      const mailResponse = await sendMail(otp, email)
+      console.log("mailResponse===>", mailResponse)
+      if (!mailResponse.id) {
+        throw new Error(mailResponse.message)
+      }
+      currentUser
+        .save()
+        .then(
+          res.json("Successfully Sent mail")
+        )
+        .catch((err) => {
+          throw new Error(err.message)
+        });
 
-        currentUser.otp = otp
-        currentUser.otpGeneratedTime = otpGeneratedTime
-        currentUser.isRegistered = false
-        sendMail(otp, email)
-        currentUser
-          .save()
-          .then(
-            res.json("Successfully Saved")
-          )
-          .catch((err) => console.log(err));
-      });
 
     } else {
       console.log(result.error)

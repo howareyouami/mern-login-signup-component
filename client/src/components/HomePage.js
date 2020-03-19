@@ -52,12 +52,12 @@ export class HomePage extends Component {
             </Switch>
 
              { this.props.button && <Link className='divStyle' to="/login">
-               <Button size="lg"  color="light">Sign In</Button>
+               <Button size="lg"  color="light">Start</Button>
                </Link>}
-
+{/* 
              {this.props.button && <Link className='divStyle' to="/register">
                <Button  size="lg"  color="light">Register</Button>
-             </Link>}
+             </Link>} */}
 
           </div>
         </div>

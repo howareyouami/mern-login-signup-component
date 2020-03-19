@@ -1,6 +1,6 @@
 const { MAILGUN_DOMAIN, MAILGUN_KEY } = require("../config/config");
 
-const sendMail = (otp, email) => {
+const sendMail = async (otp, email) => {
   const mailgun = require("mailgun-js");
   const mg = mailgun({ apiKey: MAILGUN_KEY, domain: MAILGUN_DOMAIN });
   const data = {
@@ -419,10 +419,7 @@ const sendMail = (otp, email) => {
       </html>
       `
   };
-  mg.messages().send(data, function (error, body) {
-    2
-    console.log(body);
-  });
+  return mg.messages().send(data);
 };
 
 module.exports.sendMail = sendMail;
