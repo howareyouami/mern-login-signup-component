@@ -7,7 +7,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   AUTH_SUCCESS,
-  AUTH_FAIL
+  AUTH_FAIL,
+  ADD_USER_DETAILS
 } from "../actions/types";
 
 
@@ -20,11 +21,11 @@ const initialState = {
 export default function (state = initialState, action) {
 
   switch (action.type) {
-    case CHANGE_APP_STATUS: 
-    return {
-      ...state,
-      appStatus: action.payload
-    };
+    case CHANGE_APP_STATUS:
+      return {
+        ...state,
+        appStatus: action.payload
+      };
     case REGISTER_SUCCESS:
       return {
         ...state,
@@ -49,7 +50,11 @@ export default function (state = initialState, action) {
         user: null,
         isAuthenticated: false,
       }
-
+    case ADD_USER_DETAILS:
+      return {
+        ...state,
+        user: { ...state.user, ...action.payload }
+      }
     default:
       return state;
   }

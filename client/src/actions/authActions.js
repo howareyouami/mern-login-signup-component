@@ -10,7 +10,8 @@ import {
   AUTH_FAIL,
   LOGOUT_SUCCESS,
   IS_LOADING,
-  CHANGE_APP_STATUS
+  CHANGE_APP_STATUS,
+  ADD_USER_DETAILS
 } from "./types";
 
 import { appStatusType } from '../constants'
@@ -110,7 +111,8 @@ export const otpVerify = ({ otp, userId }) => (dispatch) => {
     .post("/api/users/otpVerify", { otp, userId })
     .then((res) => {
       console.log("res", res)
-      dispatch({ type: CHANGE_APP_STATUS, payload: res.data })
+      dispatch({ type: CHANGE_APP_STATUS, payload: res.data.status })
+      dispatch({ type: ADD_USER_DETAILS, payload: res.data.userData })
       dispatch({ type: IS_LOADING });
     }
     )
@@ -134,7 +136,7 @@ export const logout = () => (dispatch) => {
       })
       dispatch({
         type: CHANGE_APP_STATUS,
-        payload:""
+        payload: ""
       })
     }
 

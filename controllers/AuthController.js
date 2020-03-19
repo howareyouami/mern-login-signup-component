@@ -88,9 +88,9 @@ exports.otpVerify = async (req, res) => {
     console.log("currentUser", currentUser)
     if (currentUser.otp === otp) {
       if (currentUser.isRegistered) {
-        res.json("REGISTERED");
+        res.json({ status: "REGISTERED", userData: currentUser });
       } else {
-        res.json("OTP_VERIFIED");
+        res.json({ status: "OTP_VERIFIED", userData: currentUser });
       }
     } else {
       throw new Error("Wrong otp")

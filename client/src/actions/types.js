@@ -12,4 +12,6 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const IS_LOADING = 'IS_LOADING';
 export const CHANGE_APP_STATUS = 'CHANGE_APP_STATUS';
+export const ADD_USER_DETAILS = 'ADD_USER_DETAILS';
+
 

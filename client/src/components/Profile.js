@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   Button,
   Card,
- CardTitle,
+  CardTitle,
   CardSubtitle,
   CardBody
 } from "reactstrap";
@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
 import { logout } from '../actions/authActions';
-import { buttonReset} from '../actions/uiActions';
+import { buttonReset } from '../actions/uiActions';
 
 export class Profile extends Component {
 
@@ -35,28 +35,32 @@ export class Profile extends Component {
     //   return <Redirect to="/login" />
     // }
 
-    const {user} = this.props.authState;
+    const { user } = this.props.authState;
 
     return (
-       <div className="container">
+      <div className="container">
         <div className="main">
           <Card>
             <CardBody>
-          <CardTitle><h1>{ user ? `Welcome, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardTitle>
-          <br/>
-           <CardSubtitle><h5> You are now Logged In <span role="img" aria-label="clap">👏 </span></h5></CardSubtitle>
-          <br/>
-        <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
+              <CardTitle><h1>{user ? `Welcome, ${user && user.firstName}` : ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardTitle>
+              <br />
+              <CardSubtitle><h5> You are now Logged In <span role="img" aria-label="clap">👏 </span></h5></CardSubtitle>
+              <CardSubtitle><h5>First Name:{user && user.firstName}</h5></CardSubtitle>
+              <CardSubtitle><h5>Last Name:{user && user.lastName}</h5></CardSubtitle>
+              <CardSubtitle><h5>Referal code:{user && user.refCode}</h5></CardSubtitle>
+              <br />
+              <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
             </CardBody>
           </Card>
         </div>
-    </div>
+      </div>
     )
   }
 }
 const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
-  authState: state.auth
+  authState: state.auth,
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps, { logout, buttonReset })(Profile);
