@@ -13,15 +13,17 @@ import {
 } from "./types";
 
 
-//axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:5000";
 
-axios.defaults.baseURL = "https://demos.shawndsilva.com/sessions-auth-app"
+// axios.defaults.baseURL = "https://demos.shawndsilva.com/sessions-auth-app"
 
 //Check if user is already logged in
 export const isAuth = () => (dispatch) => {
 
-    axios
-    .get("/api/users/authchecker",{withCredentials:true})
+  axios
+    .get("/api/users/authchecker", {
+      withCredentials: true
+    })
     .then((res) =>
       dispatch({
         type: AUTH_SUCCESS,
@@ -50,8 +52,8 @@ export const register = ({ name, email, password }) => (dispatch) => {
 
   axios
     .post("/api/users/register", body, headers)
-    .then((res) =>{
-      dispatch(returnStatus(res.data, res.status, 'REGISTER_SUCCESS'));
+    .then((res) => {
+      dispatch(returnStatus(res.data, res.status, REGISTER_SUCCESS));
       dispatch({ type: IS_LOADING })
     })
     .catch((err) => {
@@ -97,7 +99,7 @@ export const login = ({ email, password }) => (dispatch) => {
 //Logout User and Destroy session
 export const logout = () => (dispatch) => {
 
-    axios
+  axios
     .delete("/api/users/logout", { withCredentials: true })
     .then((res) =>
       dispatch({

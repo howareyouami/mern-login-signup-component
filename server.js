@@ -63,7 +63,7 @@ app.use(
 app.use(helmet())
 
 const corsOptions = {
-  origin: 'http://localhost',
+  origin: 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
@@ -76,10 +76,10 @@ router.get("/", (req, res) => res.send("HELLO FRIEND"));
 
 // API / Routes;
 // Uncomment Below for Development
-//app.use("/api/users", require("./routes/users"));
+app.use("/api/users", require("./routes/users"));
 
 //Uncomment Below for Production, routes mounted at /sessions-auth-app and not root domain
-app.use("/sessions-auth-app/api/users", require("./routes/users"));
+// app.use("/sessions-auth-app/api/users", require("./routes/users"));
 // app.use("/api/auth", require("./routes/auth"));
 
 app.listen(PORT, () => console.log(`Server started on http://${HOST}:${PORT}`));

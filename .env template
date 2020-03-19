@@ -1,8 +1,8 @@
 HOST=localhost
 PORT=5000
-DB_USERNAME=yourDBusername
-DB_PASSWORD=yourDBpassword
-DB_CLUSTER=yourDBcluster
+DB_USERNAME=howareyouami
+DB_PASSWORD=jhOFVSf7CmsLb26g
+DB_CLUSTER=cluster0-ha9gp.gcp
 SESS_SECRET=yourSessionSecret
 NODE_ENV='development'
 COOKIE_NAME='your-session-cookie-name'
