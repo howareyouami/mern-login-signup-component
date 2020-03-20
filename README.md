@@ -22,11 +22,6 @@ Minimalistic, ready-to-use component for Sessions based Login and Sign-Up using 
 
 ## Quick Start
 
-Clone the repository
-
-```
- https://github.com/shawn-dsilva/mern-login-signup-component.git
-```
 
 Install packages for Node backend
 
